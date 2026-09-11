@@ -1,0 +1,29 @@
+[project]
+name = "gfliner2-5-app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Ajax0564", email = "ankit51200iit@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.141.1",
+    "gliner2[local]>=2.0.0",
+    "gradio>=6.17.3",
+    "protobuf>=7.36.1",
+    "redis>=8.1.0",
+    "sentencepiece>=0.2.2",
+    "uvicorn>=0.52.4",
+]
+
+[project.scripts]
+gfliner2-5-app = "gfliner2_5_app:main"
+
+[build-system]
+requires = ["uv_build>=0.12.7,<0.13.0"]
+build-backend = "uv_build"
+
+# Tells uv_build to look inside the src/ folder
+[tool.uv.build-backend]
+source-dir = "src"
