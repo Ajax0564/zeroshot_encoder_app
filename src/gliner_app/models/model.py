@@ -1,4 +1,5 @@
 import asyncio
+import torch
 from gliner2 import AutoExtractor
 from typing import Annotated
 from pydantic import BaseModel, Field, field_validator
@@ -113,17 +114,25 @@ class EntityRequest(BaseModel):
         return value
 
 
+def get_device() -> str:
+    """Use CUDA when a compatible GPU is available, otherwise use the CPU."""
+    return "cuda" if torch.cuda.is_available() else "cpu"
+
+
 def load_extractor():
     LOCAL_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    device = get_device()
 
     print(f"Model directory: {LOCAL_DIRECTORY}")
     print(f"Model directory contents: {list(LOCAL_DIRECTORY.iterdir())}")
+    print(f"Using device: {device}", flush=True)
 
     if any(LOCAL_DIRECTORY.iterdir()):
         print(f"Loading local model: {LOCAL_DIRECTORY}", flush=True)
 
         extractor = AutoExtractor.from_pretrained(
-            str(LOCAL_DIRECTORY)
+            str(LOCAL_DIRECTORY),
+            map_location=device,
         )
 
         print("Local model loaded!", flush=True)
@@ -133,7 +142,8 @@ def load_extractor():
     print(f"Downloading: {MODEL_NAME}", flush=True)
 
     extractor = AutoExtractor.from_pretrained(
-        MODEL_NAME
+        MODEL_NAME,
+        map_location=device,
     )
 
     print("Download/load complete!", flush=True)

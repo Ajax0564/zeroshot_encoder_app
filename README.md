@@ -18,7 +18,9 @@ directory is present.
 - Python 3.12 or newer
 - Memurai running on `localhost:6379` (or a custom `REDIS_URL`)
 - The repository's model files under
-	`src/gfliner2_5_app/model/fastino_gliner2.5-base-v1/`
+	`src/gliner_app/model/fastino_gliner2.5-base-v1/`
+- A CUDA-enabled PyTorch installation to use an NVIDIA GPU; otherwise the
+	application automatically uses the CPU
 
 The first API startup loads the model and may take a little time. Keep the API
 process running while using the web interface.
@@ -29,7 +31,7 @@ Clone the repository and enter the project directory:
 
 ```bash
 git clone <repository-url>
-cd gflinear2_5_app
+cd glinear_app
 ```
 
 Create and activate a virtual environment:
@@ -80,12 +82,29 @@ needed:
 $env:CACHE_TTL = "1800"
 ```
 
+### GPU support
+
+At startup, the API checks `torch.cuda.is_available()`. If it returns `True`,
+GLiNER loads on CUDA; otherwise it loads on the CPU. No application setting is
+needed to switch between the two.
+
+The default PyTorch package may be CPU-only. To enable NVIDIA CUDA support,
+install the CUDA-enabled PyTorch build appropriate for your driver from the
+[official PyTorch installation selector](https://pytorch.org/get-started/locally/).
+Verify it before starting the API:
+
+```powershell
+python -c "import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
+```
+
+The API logs `Using device: cuda` or `Using device: cpu` during startup.
+
 ## Start the API
 
 From the project root, run:
 
 ```bash
-python -m uvicorn gfliner2_5_app.main:app --reload
+python -m uvicorn gliner_app.main:app --reload
 ```
 
 The API is available at `http://127.0.0.1:8000`.
@@ -134,7 +153,7 @@ Leave the API running, open a second terminal, activate the same virtual
 environment, and run:
 
 ```bash
-python -m gfliner2_5_app.ui
+python -m gliner_app.ui
 ```
 
 Open the Gradio playground at `http://127.0.0.1:7860`.
@@ -149,7 +168,7 @@ The playground includes three tabs:
 
 The UI sends requests to `http://127.0.0.1:8000` by default. If the API is
 running on another host or port, update `API_URL` in
-`src/gfliner2_5_app/ui.py` before launching the UI.
+`src/gliner_app/ui.py` before launching the UI.
 
 ## Run Tests
 
@@ -162,7 +181,7 @@ python -m pytest
 ## Project Layout
 
 ```text
-src/gfliner2_5_app/
+src/gliner_app/
 ├── main.py                 # FastAPI application and HTTP endpoints
 ├── ui.py                   # Gradio playground
 ├── config.py               # Model and Redis configuration
