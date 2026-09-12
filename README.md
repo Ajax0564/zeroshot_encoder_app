@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/0ebdc2b3-9b32-4568-b887-59b839f5f559
+
 # GLiNER 2.5 Inference App
 
 This project provides a local text-processing service built around
