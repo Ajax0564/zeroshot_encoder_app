@@ -1,6 +1,9 @@
 
 
-https://github.com/user-attachments/assets/e7ed0134-f885-45df-8f0f-105a2cd9a9d7
+
+https://github.com/user-attachments/assets/da152146-fe88-455d-ae85-fb0f07be0bf1
+
+
 
 # GLiNER 2.5 Inference App
 
