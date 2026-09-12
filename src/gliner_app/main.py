@@ -4,7 +4,7 @@ from typing import Any
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from gfliner2_5_app.models.model import (
+from gliner_app.models.model import (
     GLiNERModel,
     ClassificationRequest,
     EntityRequest,
